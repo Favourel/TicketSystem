@@ -1,0 +1,279 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}ITEM7 | Login {% endblock%}</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<style>
+    html,
+body {
+  height: 100%;
+}
+
+body {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 80px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+body{
+	background-color: hsl(0, 0%, 98%);
+}
+
+h1,h2,h3,h4,h5,h6{
+	color:hsl(0, 0%, 30%);
+}
+
+*.box-element{
+	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+	background-color: #fff;
+	border-radius: 4px;
+	padding: 50px;
+	padding-bottom: 70px;
+}
+
+.col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{
+	margin-top: 10px;
+}
+
+.btn{
+	border-radius: 6;
+}
+#cart-ico{
+	width:40px;
+	display: inline-block;
+	margin-right: 1px;
+}
+
+
+.form-field{
+	width: 300px;
+	display: inline-right;
+	padding: 10px;
+}
+
+.container {
+  max-width: 990px;
+}
+
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+
+</style>
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+    <a class="navbar-brand" href="/">
+        <div class="form-inline my-2 my-lg-0 float-right">
+            <a href="{% url 'home' %}">
+                <h4 style="text-shadow: 2px 1px 1px grey; font-family: Florence;">
+                    <strong>ITEM7</strong>
+                </h4>
+            </a>
+        </div>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+            </li>
+            <li class="nav-item">
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container" align="center">
+    <div class="col-lg-6">
+        <div class="" id="form-wrapper">
+            <h3 class="font-weight-light">LOGIN | ITEM7 </h3>
+            <hr>
+            <form action="{% url 'login' %}" method="POST" id="login-form">
+                {% csrf_token %}
+                {% if error %}
+                <small style="color:red"> {{ error }} </small>
+                {% endif %}
+                <div class="form-group">
+                    <label for="email"></label>
+                    <input value="{{ userData.email }}" name="email" type="email" class="form-control" id="email"
+                           aria-describedby="emailHelp" placeholder="Enter email" required>
+                </div>
+                <div class="input-group mb-2 mr-sm-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text far fa-eye" id="togglePassword"></div>
+                    </div>
+                    <input class="form-control" type="password" name="password"
+                               id="password" placeholder="Enter password" required>
+                </div>
+                <br>
+                <button id="submit" type="submit" class="btn btn-block btn-warning">
+                    <i class="fa fa-spinner fa-spin hidden" id="spinner"></i>
+<!--                        <div class="spinner-border text-light hidden" id="spinner" role="status">-->
+<!--                            <span class="sr-only">Loading...</span>-->
+<!--                        </div>-->
+                        <span id="button-text">LOGIN</span>
+                </button>
+
+<!--                <button style="display: inline-block;float: center" type="submit"-->
+<!--                        class="btn-md btn-block btn btn-warning">LOGIN-->
+<!--                </button>-->
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox" align="left">
+                        <input class="custom-control-input" type="checkbox" id="keep-signed-2">
+                        <label class="custom-control-label" for="keep-signed-2">Keep me signed in</label>
+                    </div>
+                </div>
+
+                <p  style="font-size: 16px; float: center;">
+                    Don't have an account?
+                    <a href="{% url 'signup' %}" class="text-decoration-none">SIGNUP</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    let paymentForm = document.getElementById('login-form');
+	if (paymentForm) {
+		paymentForm.addEventListener('submit', function () {
+		    console.log("login button clicked");
+			changeLoadingState(true);
+
+	    }
+	  );
+	}
+
+    var changeLoadingState = function(isLoading) {
+        if (isLoading) {
+            document.getElementById("submit").disabled = true;
+            document.querySelector("#spinner").classList.remove("hidden");
+            document.querySelector("#button-text").classList.add("hidden");
+        } else {
+            document.getElementById("submit").disabled = false;
+            document.querySelector("#spinner").classList.add("hidden");
+            document.querySelector("#button-text").classList.remove("hidden");
+        }
+    };
+
+</script>
+<style>
+.hidden {
+    display: none;
+}
+
+/* Add a right margin to each icon */
+.fa {
+  margin-left: -12px;
+  margin-right: 8px;
+}
+</style>
+<style>
+.home-intro {
+  width: 630px;
+  height: 100vh;
+  background:  url({% static 'images/IMG_20200903_152721_586.jpg' %});
+  background-size: cover;
+  background-blend-mode: multiply;
+  color: white;
+  text-align: center;
+}
+#ye {
+    background:  url({% static 'images/IMG_20200903_152721_586.jpg' %});
+    background-repeat: no-repeat;
+    background-size: 50% 100%;
+}
+img{
+    width: 0;
+    height: 100vh;
+    opacity: 0.9;
+
+}
+
+@media (min-width: 48em) {
+    img {
+        width: 630px;
+        height: 100vh;
+        opacity: 0.9;
+    }
+    img:hover {
+        opacity: 1;
+        }
+}
+
+#togglePassword {
+    padding-top: 10px;
+    padding-bottom: 3px;
+}
+
+</style>
+
+<script>
+        const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#password');
+
+togglePassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+});
+
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</html>

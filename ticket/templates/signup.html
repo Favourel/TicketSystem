@@ -1,0 +1,146 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}ITEM7 | Signup {% endblock%}</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<style>
+.body {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 1px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+#cart-ico{
+	width:40px;
+	display: inline-block;
+	margin-right: 1px;
+}
+
+body{
+	background-color: hsl(0, 0%, 98%);
+}
+
+h1,h2,h3,h4,h5,h6{
+	color:hsl(0, 0%, 30%);
+}
+
+*.box-element{
+	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+	background-color: #fff;
+	border-radius: 4px;
+	padding: 50px;
+}
+
+.col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{
+	margin-top: 10px;
+}
+
+
+</style>
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+    <a href="javascript:history.go(-1)" class="text-decoration-none">
+        <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-arrow-left" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+                  d="M5.854 4.646a.5.5 0 0 1 0 .708L3.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0z"/>
+            <path fill-rule="evenodd" d="M2.5 8a.5.5 0 0 1 .5-.5h10.5a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+        </svg>
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <div class="form-inline my-2 my-lg-0">
+                <a href="{% url 'home' %}">
+                    <h4 style="float: left;
+                    text-shadow: 2px 1px 1px grey; font-family: Florence;">
+                        <strong>ITEM7</strong>
+                    </h4>
+                </a>
+            </div>
+        </a>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+            </li>
+            <li class="nav-item">
+            </li>
+        </ul>
+    </div>
+</nav>
+<br>
+<br><br>
+<div class="body">
+    <div class="container " align="center">
+        <div class="col-lg-6">
+            <div class="" id="form-wrapper">
+                <h3 class="font-weight-light">Signup | Item7 </h3>
+                <hr>
+                <form action="/signup" method="POST">
+                    {% if error %}
+                    <small style="color:red"> {{ error.field_error }} </small>
+                    <small style="color:green"> {{ error.success }} </small>
+                    {% endif %}
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input value="{{ userData.name }}" name="name" type="text" class="form-control" id="name"
+                               aria-describedby="emailHelp" placeholder="Enter name" required>
+                        {% if error %}
+                        <small style="color:red"> {{ error.name_error }} </small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input value="{{ userData.email }}" name="email" type="email" class="form-control" id="email"
+                               aria-describedby="emailHelp" placeholder="Enter email" required>
+                        {% if error %}
+                        <small style="color:red"> {{ error.emailExits_error }} </small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone number</label>
+                        <input value="{{ userData.phone }}" name="phone" type="number" class="form-control" id="phone"
+                               placeholder="Enter Phone Number" required>
+                        {% if error %}
+                        <small style="color:red"> {{ error.phoneNumber_error }} </small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input name="password" type="password" class="form-control" id="password"
+                               placeholder="Enter Password" required>
+                        {% if error %}
+                        <small style="color:red">{{ error.notMatch_error }}
+                            {{ error.minPass_error }} </small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input name="confirm_password" type="password" class="form-control" id="confirm_password"
+                               placeholder="Enter Password" required>
+                        {% if error %}
+                        <small style="color:red"> {{ error.notMatch_error }}
+                            {{ error.minPass_error }} </small>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-block btn-warning">SIGNUP</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    label {
+        float: left
+    }
+</style>

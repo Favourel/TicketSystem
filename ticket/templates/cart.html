@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cart %}
+{% load crispy_forms_utils %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_field %}
+{% load countries %}
+
+{% block title %} ITEM7 | Cart {% endblock %}
+{% block content %}
+<br>
+
+<div class="box-element mt-2" style="overflow: auto">
+    <div class="container">
+        <div class="row">
+            {% if request.session.cart %}
+            <h3><b>CART</b></h3>
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <!--<th>S.no</th>-->
+                    <th></th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <!--<th>Actions</th>-->
+                    <th>Subtotal</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in allProduct %}
+                <tr>
+                    <!--<td>{{ forloop.counter }}</td>-->
+                    <td><img height="80px" width="100px" src="{{ product.image.url }}" alt=""></td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price|currency }}</td>
+                    <td colspan="1">
+                        <a href="cart?increase={{ product.id }}"
+                           class="text-decoration-none btn-sm btn-warning">+</a><br>
+                        {{ product|cart_quantity:request.session.cart }} <br>
+                        <a href="cart?decrease={{ product.id }}" class="text-decoration-none btn-sm btn-danger">-</a>
+                    </td>
+
+                    <th>{{ product|price_subtotal:request.session.cart|currency }}</th>
+                </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td style="flex:1">
+                        <strong>DELIVERY FEE: <b>₦300</b> </strong>
+                    </td>
+                    <td colspan="2"></td>
+                    <td style="flex:1"><strong>Total: </strong></td>
+                    <td style="flex:1">{{ allProduct|price_total:request.session.cart|currency }}</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="box-element">
+    <a href="{% url 'home' %}" class="btn btn-warning">&#x2190; Continue shopping</a>
+    <div class="float-right">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+            Checkout
+        </button>
+    </div>
+</div>
+<br>
+<br>
+{% else %}
+<div class="container" align="center">
+    <img src="{% static 'images/cart.png' %}" width="300px" height="100%" style="opacity: 0.3;
+     float: center; padding-top: 2rem;
+  padding-bottom: 0rem;"><br>
+</div>
+<div class="container" align="center">
+    <h3 style="opacity: 0.5;"> Your cart is empty!</h3>
+    <br><br>
+</div>
+<div class="container" align="center">
+    <a href="{% url 'home' %}" class="btn btn-lg btn-block btn-warning">&#x2190; Shop now</a>
+</div>
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">CHECKOUT FORM</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/checkout" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input name="address" type="text" class="form-control" id="address"
+                               placeholder="Enter address" required>
+                    </div>
+                    <label for="address">Phone</label>
+                    {{ u_form.phone }}
+                    <br>
+                    <div class="float-right">
+                        <input type="submit" value="Cash On Delivery" class="btn btn-warning">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+
+
+{% endblock %}

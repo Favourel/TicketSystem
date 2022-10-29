@@ -1,0 +1,34 @@
+from django.urls import path
+from .views import (Home,
+                    Signup,
+                    Login,
+                    logout,
+                    Cart,
+                    Checkout,
+                    OrderView,
+                    orders_view,
+                    about_view,
+                    post_review,
+                    reservation_review,
+                    JoinFormView
+                    # Reservation,
+                    )
+from .middlewares import LoginCheckMiddleware, LogoutCheckMiddleware
+
+urlpatterns = [
+    path('', Home.as_view(), name='home'),
+    # path('reservation', Reservation.as_view(), name='reservation'),
+    path('post-review', post_review, name='post-review'),
+    path('reservation', reservation_review, name='reservation'),
+    # path('', CategoryListView.as_view(), name='home'),
+    path('signup', LogoutCheckMiddleware(Signup.as_view()), name='signup'),
+    path('login/', LogoutCheckMiddleware(Login.as_view()), name='login'),
+    path('logout/', LoginCheckMiddleware(logout), name='logout'),
+    path('cart', Cart.as_view(), name='cart'),
+    path('checkout', LoginCheckMiddleware(Checkout.as_view()), name='checkout'),
+    path('order', LoginCheckMiddleware(OrderView.as_view()), name='order'),
+    path('user/orders/', orders_view, name='orders'),
+    path('about/', about_view, name='about'),
+    path('join/', JoinFormView.as_view()),
+
+]
